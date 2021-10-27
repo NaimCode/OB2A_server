@@ -7,6 +7,7 @@ const frontend = process.env.FRONTEND || "http://localhost:3000";
 const backend = process.env.BACKEND || "http://localhost:1337";
 
 const makePayment = async (req, res) => {
+  console.log(req.body);
   stripe.charge.create(
     {
       source: req.body.card.id,
