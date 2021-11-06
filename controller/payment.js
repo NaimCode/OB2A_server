@@ -6,9 +6,10 @@ const stripe = require("stripe")(process.env.STRIPE_KEY);
 const frontend = process.env.FRONTEND || "http://localhost:3000";
 const backend = process.env.BACKEND || "http://localhost:1337";
 
-const makePayment = async (req, res) => {
+const makePayment = (req, res) => {
   console.log(req.body);
-  stripe.charge.create(
+
+  stripe.charges.create(
     {
       source: req.body.card.id,
       amount: req.body.prix * 100,
@@ -16,9 +17,11 @@ const makePayment = async (req, res) => {
     },
     (stripeErr, stripeRes) => {
       if (stripeErr) {
-        makeOrder(req);
         res.status(500).json(stripeErr);
-      } else res.status(200).json(stripeRes);
+      } else {
+        makeOrder(req);
+        res.status(200).json(stripeRes);
+      }
     }
   );
 };
