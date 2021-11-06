@@ -7,13 +7,19 @@ const stripe = require("stripe")(
 
 router.post("/", async (req, res) => {
   try {
+    const client = req.body.client;
+
     const paymentIntent = await stripe.paymentIntents.create({
-      amount: req.body.prix, // Specify amount here
+      amount: Math.round(req.body.prix.toFixed(2) * 100), // Specify amount here
       currency: "eur",
+      //customer: client.email,
+      description: `Client: ${client.email}, Produits: ${client.panier.map(
+        (p) => `${p.titre} `
+      )}`,
       // Specify currency here
     });
     // Return client secret
-    console.log(paymentIntent);
+
     res.status(200).json({
       clientSecret: paymentIntent.client_secret,
     });
