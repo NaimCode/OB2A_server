@@ -1,8 +1,7 @@
 const router = require("express").Router();
-
-const stripe = require("stripe")(
-  "sk_test_51JoXgfFxlWbadRCPjDvc1ljK1AkKUlTmn4K40zfeVGryIBP4rXhT1Rsa6w6lRPKfqzW49XPPxfvGR5NGOj2W2Agp004NCvyaA1"
-);
+const dotenv = require("dotenv");
+dotenv.config();
+const stripe = require("stripe")(process.env.STRIPE_KEY);
 // Create a PaymentIntent with the order amount and currency
 
 router.post("/", async (req, res) => {
